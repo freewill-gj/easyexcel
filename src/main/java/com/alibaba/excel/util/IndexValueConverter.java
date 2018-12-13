@@ -1,13 +1,14 @@
 package com.alibaba.excel.util;
 
+import com.alibaba.excel.metadata.IndexValue;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import com.alibaba.excel.metadata.IndexValue;
-
 /**
  * 去除空Cell
+ *
  * @author jipengfei
  */
 public class IndexValueConverter {
@@ -53,11 +54,11 @@ public class IndexValueConverter {
                 beforechar = berforStack.pop();
             }
             int n = currentChar - beforechar;
-            if(n<0){
-                n = n+26;
-                if(!currentStack.isEmpty()){
+            if (n < 0) {
+                n = n + 26;
+                if (!currentStack.isEmpty()) {
                     char borrow = currentStack.pop();
-                    char newBorrow =(char)(borrow -1);
+                    char newBorrow = (char) (borrow - 1);
                     currentStack.push(newBorrow);
                 }
             }
@@ -65,7 +66,7 @@ public class IndexValueConverter {
 
             result += n * Math.pow(26, i);
             i++;
-            beforechar='@';
+            beforechar = '@';
         }
 
         return result;

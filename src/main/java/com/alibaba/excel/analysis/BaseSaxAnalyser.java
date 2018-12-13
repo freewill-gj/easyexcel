@@ -58,10 +58,10 @@ public abstract class BaseSaxAnalyser implements AnalysisEventRegisterCenter, Ex
         if (analysisContext.getCurrentRowNum() < analysisContext.getCurrentSheet().getHeadLineMun()) {
             if (analysisContext.getCurrentRowNum() <= analysisContext.getCurrentSheet().getHeadLineMun() - 1) {
                 analysisContext.buildExcelHeadProperty(null,
-                    (List<String>)analysisContext.getCurrentRowAnalysisResult());
+                        (List<String>) analysisContext.getCurrentRowAnalysisResult());
             }
         } else {
-            List<String> content = converter((List<String>)event.getData());
+            List<String> content = converter((List<String>) event.getData());
             /** Parsing Analyze the body content **/
             analysisContext.setCurrentRowAnalysisResult(content);
             if (listeners.size() == 1) {

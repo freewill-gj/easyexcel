@@ -1,10 +1,6 @@
 package com.alibaba.excel.annotation;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * @author jipengfei
@@ -14,23 +10,22 @@ import java.lang.annotation.Target;
 @Inherited
 public @interface ExcelProperty {
 
-     /**
-      * @return
-      */
-     String[] value() default {""};
+    /**
+     * @return
+     */
+    String[] value() default {""};
 
 
-     /**
-      * @return
-      */
-     int index() default 99999;
+    /**
+     * @return
+     */
+    int index() default 99999;
 
-     /**
-      *
-      * default @see com.alibaba.excel.util.TypeUtil
-      * if default is not  meet you can set format
-      *
-      * @return
-      */
-     String format() default "";
+    /**
+     * default @see com.alibaba.excel.util.TypeUtil
+     * if default is not  meet you can set format
+     *
+     * @return
+     */
+    String format() default "";
 }

@@ -3,8 +3,6 @@ package com.alibaba.excel.event;
 import com.alibaba.excel.context.AnalysisContext;
 
 /**
- *
- *
  * @author jipengfei
  */
 public abstract class AnalysisEventListener<T> {

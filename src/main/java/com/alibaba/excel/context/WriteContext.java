@@ -91,10 +91,6 @@ public class WriteContext {
 
     private WriteHandler afterWriteHandler;
 
-    public WriteHandler getAfterWriteHandler() {
-        return afterWriteHandler;
-    }
-
     public WriteContext(InputStream templateInputStream, OutputStream out, ExcelTypeEnum excelType,
                         boolean needHead, WriteHandler afterWriteHandler) throws IOException {
         this.needHead = needHead;
@@ -103,6 +99,10 @@ public class WriteContext {
         this.workbook = WorkBookUtil.createWorkBook(templateInputStream, excelType);
         this.defaultCellStyle = StyleUtil.buildDefaultCellStyle(this.workbook);
 
+    }
+
+    public WriteHandler getAfterWriteHandler() {
+        return afterWriteHandler;
     }
 
     /**
@@ -155,7 +155,9 @@ public class WriteContext {
      * @param clazz
      */
     private void initExcelHeadProperty(List<List<String>> head, Class<? extends BaseRowModel> clazz) {
-        if (head != null || clazz != null) { this.excelHeadProperty = new ExcelHeadProperty(clazz, head); }
+        if (head != null || clazz != null) {
+            this.excelHeadProperty = new ExcelHeadProperty(clazz, head);
+        }
     }
 
     public void initTableHead() {
@@ -181,8 +183,8 @@ public class WriteContext {
     private void addMergedRegionToCurrentSheet(int startRow) {
         for (com.alibaba.excel.metadata.CellRange cellRangeModel : excelHeadProperty.getCellRangeModels()) {
             currentSheet.addMergedRegion(new CellRangeAddress(cellRangeModel.getFirstRow() + startRow,
-                cellRangeModel.getLastRow() + startRow,
-                cellRangeModel.getFirstCol(), cellRangeModel.getLastCol()));
+                    cellRangeModel.getLastRow() + startRow,
+                    cellRangeModel.getFirstCol(), cellRangeModel.getLastCol()));
         }
     }
 
@@ -200,9 +202,9 @@ public class WriteContext {
     private void initTableStyle(com.alibaba.excel.metadata.TableStyle tableStyle) {
         if (tableStyle != null) {
             this.currentHeadCellStyle = StyleUtil.buildCellStyle(this.workbook, tableStyle.getTableHeadFont(),
-                tableStyle.getTableHeadBackGroundColor());
+                    tableStyle.getTableHeadBackGroundColor());
             this.currentContentCellStyle = StyleUtil.buildCellStyle(this.workbook, tableStyle.getTableContentFont(),
-                tableStyle.getTableContentBackGroundColor());
+                    tableStyle.getTableContentBackGroundColor());
         }
     }
 

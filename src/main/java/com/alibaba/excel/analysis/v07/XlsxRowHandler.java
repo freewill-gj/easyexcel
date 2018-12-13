@@ -17,7 +17,6 @@ import java.util.Arrays;
 import static com.alibaba.excel.constant.ExcelXmlConstants.*;
 
 /**
- *
  * @author jipengfei
  */
 public class XlsxRowHandler extends DefaultHandler {
@@ -49,7 +48,7 @@ public class XlsxRowHandler extends DefaultHandler {
     }
 
     @Override
-    public void startElement(String uri, String localName, String name, Attributes attributes) throws SAXException {
+    public void startElement(String uri, String localName, String name, Attributes attributes) {
 
         setTotalRowCount(name, attributes);
 
@@ -85,10 +84,10 @@ public class XlsxRowHandler extends DefaultHandler {
         }
     }
 
-    private void endCellValue(String name) throws SAXException {
+    private void endCellValue(String name) {
         // ensure size
         if (curCol >= curRowContent.length) {
-            curRowContent = Arrays.copyOf(curRowContent, (int)(curCol * 1.5));
+            curRowContent = Arrays.copyOf(curRowContent, (int) (curCol * 1.5));
         }
         if (CELL_VALUE_TAG.equals(name)) {
 
@@ -112,7 +111,7 @@ public class XlsxRowHandler extends DefaultHandler {
     }
 
     @Override
-    public void characters(char[] ch, int start, int length) throws SAXException {
+    public void characters(char[] ch, int start, int length) {
         currentCellValue += new String(ch, start, length);
     }
 
@@ -129,7 +128,7 @@ public class XlsxRowHandler extends DefaultHandler {
 
     private void endRow(String name) {
         if (name.equals(ROW_TAG)) {
-            registerCenter.notifyListeners(new OneRowAnalysisFinishEvent(curRowContent,curCol));
+            registerCenter.notifyListeners(new OneRowAnalysisFinishEvent(curRowContent, curCol));
             curRowContent = new String[20];
         }
     }

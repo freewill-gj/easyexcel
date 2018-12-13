@@ -3,7 +3,6 @@ package com.alibaba.excel.util;
 import java.io.File;
 
 /**
- *
  * @author jipengfei
  */
 public class POITempFile {
@@ -19,7 +18,7 @@ public class POITempFile {
         String tmpDir = System.getProperty(JAVA_IO_TMPDIR);
         if (tmpDir == null) {
             throw new RuntimeException(
-                "Systems temporary directory not defined - set the -D" + JAVA_IO_TMPDIR + " jvm property!");
+                    "Systems temporary directory not defined - set the -D" + JAVA_IO_TMPDIR + " jvm property!");
         }
         File directory = new File(tmpDir, POIFILES);
         if (!directory.exists()) {
@@ -29,7 +28,6 @@ public class POITempFile {
     }
 
     /**
-     *
      * @param directory
      */
     private static synchronized void syncCreatePOIFilesDirectory(File directory) {

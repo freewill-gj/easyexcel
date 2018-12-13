@@ -28,6 +28,37 @@ import java.util.List;
 public class XlsSaxAnalyser extends BaseSaxAnalyser implements HSSFListener {
 
     private boolean analyAllSheet = false;
+    private POIFSFileSystem fs;
+    private int lastRowNumber;
+    private int lastColumnNumber;
+    /**
+     * Should we output the formula, or the value it has?
+     */
+    private boolean outputFormulaValues = true;
+    /**
+     * For parsing Formulas
+     */
+    private EventWorkbookBuilder.SheetRecordCollectingListener workbookBuildingListener;
+    private HSSFWorkbook stubWorkbook;
+    private SSTRecord sstRecord;
+    private FormatTrackingHSSFListener formatListener;
+    /**
+     * So we known which sheet we're on
+     */
+
+    private int nextRow;
+    private int nextColumn;
+    private boolean outputNextStringRecord;
+    /**
+     * Main HSSFListener method, processes events, and outputs the CSV as the file is processed.
+     */
+
+    private int sheetIndex;
+    private List<String> records;
+    private boolean notAllEmpty = false;
+    private BoundSheetRecord[] orderedBSRs;
+    private List<BoundSheetRecord> boundSheetRecords = new ArrayList<BoundSheetRecord>();
+    private List<Sheet> sheets = new ArrayList<Sheet>();
 
     public XlsSaxAnalyser(AnalysisContext context) throws IOException {
         this.analysisContext = context;
@@ -87,54 +118,8 @@ public class XlsSaxAnalyser extends BaseSaxAnalyser implements HSSFListener {
         boundSheetRecords = new ArrayList<BoundSheetRecord>();
 
         sheets = new ArrayList<Sheet>();
-        if (analysisContext.getCurrentSheet() == null) {
-            this.analyAllSheet = true;
-        } else {
-            this.analyAllSheet = false;
-        }
+        this.analyAllSheet = analysisContext.getCurrentSheet() == null;
     }
-
-    private POIFSFileSystem fs;
-
-    private int lastRowNumber;
-    private int lastColumnNumber;
-
-    /**
-     * Should we output the formula, or the value it has?
-     */
-    private boolean outputFormulaValues = true;
-
-    /**
-     * For parsing Formulas
-     */
-    private EventWorkbookBuilder.SheetRecordCollectingListener workbookBuildingListener;
-    private HSSFWorkbook stubWorkbook;
-    private SSTRecord sstRecord;
-    private FormatTrackingHSSFListener formatListener;
-
-    /**
-     * So we known which sheet we're on
-     */
-
-    private int nextRow;
-    private int nextColumn;
-    private boolean outputNextStringRecord;
-
-    /**
-     * Main HSSFListener method, processes events, and outputs the CSV as the file is processed.
-     */
-
-    private int sheetIndex;
-
-    private List<String> records;
-
-    private boolean notAllEmpty = false;
-
-    private BoundSheetRecord[] orderedBSRs;
-
-    private List<BoundSheetRecord> boundSheetRecords = new ArrayList<BoundSheetRecord>();
-
-    private List<Sheet> sheets = new ArrayList<Sheet>();
 
     public void processRecord(Record record) {
         int thisRow = -1;
@@ -143,10 +128,10 @@ public class XlsSaxAnalyser extends BaseSaxAnalyser implements HSSFListener {
 
         switch (record.getSid()) {
             case BoundSheetRecord.sid:
-                boundSheetRecords.add((BoundSheetRecord)record);
+                boundSheetRecords.add((BoundSheetRecord) record);
                 break;
             case BOFRecord.sid:
-                BOFRecord br = (BOFRecord)record;
+                BOFRecord br = (BOFRecord) record;
                 if (br.getType() == BOFRecord.TYPE_WORKSHEET) {
                     // Create sub workbook if required
                     if (workbookBuildingListener != null && stubWorkbook == null) {
@@ -168,18 +153,18 @@ public class XlsSaxAnalyser extends BaseSaxAnalyser implements HSSFListener {
                 break;
 
             case SSTRecord.sid:
-                sstRecord = (SSTRecord)record;
+                sstRecord = (SSTRecord) record;
                 break;
 
             case BlankRecord.sid:
-                BlankRecord brec = (BlankRecord)record;
+                BlankRecord brec = (BlankRecord) record;
 
                 thisRow = brec.getRow();
                 thisColumn = brec.getColumn();
                 thisStr = "";
                 break;
             case BoolErrRecord.sid:
-                BoolErrRecord berec = (BoolErrRecord)record;
+                BoolErrRecord berec = (BoolErrRecord) record;
 
                 thisRow = berec.getRow();
                 thisColumn = berec.getColumn();
@@ -187,7 +172,7 @@ public class XlsSaxAnalyser extends BaseSaxAnalyser implements HSSFListener {
                 break;
 
             case FormulaRecord.sid:
-                FormulaRecord frec = (FormulaRecord)record;
+                FormulaRecord frec = (FormulaRecord) record;
 
                 thisRow = frec.getRow();
                 thisColumn = frec.getColumn();
@@ -209,7 +194,7 @@ public class XlsSaxAnalyser extends BaseSaxAnalyser implements HSSFListener {
             case StringRecord.sid:
                 if (outputNextStringRecord) {
                     // String for formula
-                    StringRecord srec = (StringRecord)record;
+                    StringRecord srec = (StringRecord) record;
                     thisStr = srec.getString();
                     thisRow = nextRow;
                     thisColumn = nextColumn;
@@ -218,14 +203,14 @@ public class XlsSaxAnalyser extends BaseSaxAnalyser implements HSSFListener {
                 break;
 
             case LabelRecord.sid:
-                LabelRecord lrec = (LabelRecord)record;
+                LabelRecord lrec = (LabelRecord) record;
 
                 thisRow = lrec.getRow();
                 thisColumn = lrec.getColumn();
                 thisStr = lrec.getValue();
                 break;
             case LabelSSTRecord.sid:
-                LabelSSTRecord lsrec = (LabelSSTRecord)record;
+                LabelSSTRecord lsrec = (LabelSSTRecord) record;
 
                 thisRow = lsrec.getRow();
                 thisColumn = lsrec.getColumn();
@@ -236,7 +221,7 @@ public class XlsSaxAnalyser extends BaseSaxAnalyser implements HSSFListener {
                 }
                 break;
             case NoteRecord.sid:
-                NoteRecord nrec = (NoteRecord)record;
+                NoteRecord nrec = (NoteRecord) record;
 
                 thisRow = nrec.getRow();
                 thisColumn = nrec.getColumn();
@@ -244,7 +229,7 @@ public class XlsSaxAnalyser extends BaseSaxAnalyser implements HSSFListener {
                 thisStr = "(TODO)";
                 break;
             case NumberRecord.sid:
-                NumberRecord numrec = (NumberRecord)record;
+                NumberRecord numrec = (NumberRecord) record;
 
                 thisRow = numrec.getRow();
                 thisColumn = numrec.getColumn();
@@ -253,7 +238,7 @@ public class XlsSaxAnalyser extends BaseSaxAnalyser implements HSSFListener {
                 thisStr = formatListener.formatNumberDateCell(numrec);
                 break;
             case RKRecord.sid:
-                RKRecord rkrec = (RKRecord)record;
+                RKRecord rkrec = (RKRecord) record;
 
                 thisRow = rkrec.getRow();
                 thisColumn = rkrec.getColumn();
@@ -270,7 +255,7 @@ public class XlsSaxAnalyser extends BaseSaxAnalyser implements HSSFListener {
 
         // Handle missing column
         if (record instanceof MissingCellDummyRecord) {
-            MissingCellDummyRecord mc = (MissingCellDummyRecord)record;
+            MissingCellDummyRecord mc = (MissingCellDummyRecord) record;
             thisRow = mc.getRow();
             thisColumn = mc.getColumn();
             thisStr = "";
@@ -299,7 +284,7 @@ public class XlsSaxAnalyser extends BaseSaxAnalyser implements HSSFListener {
 
         // Handle end of row
         if (record instanceof LastCellOfRowDummyRecord) {
-            thisRow = ((LastCellOfRowDummyRecord)record).getRow();
+            thisRow = ((LastCellOfRowDummyRecord) record).getRow();
 
             if (lastColumnNumber == -1) {
                 lastColumnNumber = 0;

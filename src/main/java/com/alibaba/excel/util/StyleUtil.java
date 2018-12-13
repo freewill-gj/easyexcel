@@ -10,7 +10,6 @@ import java.util.Map;
 public class StyleUtil {
 
     /**
-     *
      * @param workbook
      * @return
      */
@@ -18,7 +17,7 @@ public class StyleUtil {
         CellStyle newCellStyle = workbook.createCellStyle();
         Font font = workbook.createFont();
         font.setFontName("宋体");
-        font.setFontHeightInPoints((short)14);
+        font.setFontHeightInPoints((short) 14);
         font.setBold(true);
         newCellStyle.setFont(font);
         newCellStyle.setWrapText(true);
@@ -33,7 +32,6 @@ public class StyleUtil {
     }
 
     /**
-     *
      * @param workbook
      * @param f
      * @param indexedColors
@@ -55,7 +53,7 @@ public class StyleUtil {
         return cellStyle;
     }
 
-    public static Sheet buildSheetStyle(Sheet currentSheet, Map<Integer, Integer> sheetWidthMap){
+    public static Sheet buildSheetStyle(Sheet currentSheet, Map<Integer, Integer> sheetWidthMap) {
         currentSheet.setDefaultColumnWidth(20);
         for (Map.Entry<Integer, Integer> entry : sheetWidthMap.entrySet()) {
             currentSheet.setColumnWidth(entry.getKey(), entry.getValue());

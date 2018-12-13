@@ -5,7 +5,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
 /**
- *
  * @author jipengfei
  */
 public interface WriteHandler {
@@ -28,6 +27,7 @@ public interface WriteHandler {
 
     /**
      * Custom operation after creating each cell
+     *
      * @param cellNum
      * @param cell
      */

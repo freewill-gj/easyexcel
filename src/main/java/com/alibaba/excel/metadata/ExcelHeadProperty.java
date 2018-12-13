@@ -2,7 +2,6 @@ package com.alibaba.excel.metadata;
 
 import com.alibaba.excel.annotation.ExcelColumnNum;
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.alibaba.excel.util.StringUtils;
 
 import java.lang.reflect.Field;
 import java.util.*;

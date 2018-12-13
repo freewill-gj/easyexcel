@@ -25,7 +25,7 @@ public class ExcelAnalyserImpl implements ExcelAnalyser {
     public ExcelAnalyserImpl(InputStream inputStream, ExcelTypeEnum excelTypeEnum, Object custom,
                              AnalysisEventListener eventListener, boolean trim) {
         analysisContext = new AnalysisContextImpl(inputStream, excelTypeEnum, custom,
-            eventListener, trim);
+                eventListener, trim);
     }
 
     private BaseSaxAnalyser getSaxAnalyser() {
@@ -48,15 +48,15 @@ public class ExcelAnalyserImpl implements ExcelAnalyser {
                 } catch (Exception e) {
                     if (!analysisContext.getInputStream().markSupported()) {
                         throw new ExcelAnalysisException(
-                            "Xls must be available markSupported,you can do like this <code> new "
-                                + "BufferedInputStream(new FileInputStream(\"/xxxx\"))</code> ");
+                                "Xls must be available markSupported,you can do like this <code> new "
+                                        + "BufferedInputStream(new FileInputStream(\"/xxxx\"))</code> ");
                     }
                     this.saxAnalyser = new XlsSaxAnalyser(analysisContext);
                 }
             }
         } catch (Exception e) {
             throw new ExcelAnalysisException("File type error，io must be available markSupported,you can do like "
-                + "this <code> new BufferedInputStream(new FileInputStream(\\\"/xxxx\\\"))</code> \"", e);
+                    + "this <code> new BufferedInputStream(new FileInputStream(\\\"/xxxx\\\"))</code> \"", e);
         }
         return this.saxAnalyser;
     }

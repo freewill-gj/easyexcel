@@ -22,7 +22,7 @@ public class ExcelReader {
     /**
      * Analyser
      */
-    private ExcelAnalyser analyser ;
+    private ExcelAnalyser analyser;
 
     /**
      * Create new reader
@@ -93,7 +93,7 @@ public class ExcelReader {
                        AnalysisEventListener eventListener, boolean trim) {
         ExcelTypeEnum excelTypeEnum = ExcelTypeEnum.valueOf(in);
         validateParam(in, eventListener);
-        analyser =new ExcelAnalyserImpl(in, excelTypeEnum, customContent, eventListener, trim);
+        analyser = new ExcelAnalyserImpl(in, excelTypeEnum, customContent, eventListener, trim);
     }
 
     /**
@@ -115,7 +115,7 @@ public class ExcelReader {
     /**
      * Parse the specified sheet
      *
-     * @param sheet  Read sheet
+     * @param sheet Read sheet
      * @param clazz object parsed into each row of data
      */
     @Deprecated
@@ -139,7 +139,7 @@ public class ExcelReader {
      * @param in
      * @param eventListener
      */
-    private void validateParam(InputStream in,  AnalysisEventListener eventListener) {
+    private void validateParam(InputStream in, AnalysisEventListener eventListener) {
         if (eventListener == null) {
             throw new IllegalArgumentException("AnalysisEventListener can not null");
         } else if (in == null) {

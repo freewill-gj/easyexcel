@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
  * @author jipengfei
  */
 public class Sheet {
@@ -39,7 +38,7 @@ public class Sheet {
     /**
      * column with
      */
-    private Map<Integer,Integer> columnWidthMap = new HashMap<Integer, Integer>();
+    private Map<Integer, Integer> columnWidthMap = new HashMap<Integer, Integer>();
 
     /**
      *
@@ -128,7 +127,6 @@ public class Sheet {
     }
 
 
-
     public Map<Integer, Integer> getColumnWidthMap() {
         return columnWidthMap;
     }
@@ -140,14 +138,14 @@ public class Sheet {
     @Override
     public String toString() {
         return "Sheet{" +
-            "headLineMun=" + headLineMun +
-            ", sheetNo=" + sheetNo +
-            ", sheetName='" + sheetName + '\'' +
-            ", clazz=" + clazz +
-            ", head=" + head +
-            ", tableStyle=" + tableStyle +
-            ", columnWidthMap=" + columnWidthMap +
-            '}';
+                "headLineMun=" + headLineMun +
+                ", sheetNo=" + sheetNo +
+                ", sheetName='" + sheetName + '\'' +
+                ", clazz=" + clazz +
+                ", head=" + head +
+                ", tableStyle=" + tableStyle +
+                ", columnWidthMap=" + columnWidthMap +
+                '}';
     }
 
     public Boolean getAutoWidth() {

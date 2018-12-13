@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
  */
 public class TypeUtil {
 
+    public static final Pattern pattern = Pattern.compile("[\\+\\-]?[\\d]+([\\.][\\d]*)?([Ee][+-]?[\\d]+)?$");
     private static List<String> DATE_FORMAT_LIST = new ArrayList<String>(4);
 
     static {
@@ -62,11 +63,7 @@ public class TypeUtil {
                     return Boolean.parseBoolean(value.toLowerCase());
                 }
                 Integer integer = Integer.parseInt(value);
-                if (integer == 0) {
-                    return false;
-                } else {
-                    return true;
-                }
+                return integer != 0;
             }
             if (Long.class.equals(field.getType()) || long.class.equals(field.getType())) {
                 return Long.parseLong(value);
@@ -82,7 +79,7 @@ public class TypeUtil {
             if (BigDecimal.class.equals(field.getType())) {
                 return new BigDecimal(value);
             }
-            if(String.class.equals(field.getType())){
+            if (String.class.equals(field.getType())) {
                 return formatFloat(value);
             }
 
@@ -105,22 +102,16 @@ public class TypeUtil {
             return true;
         }
 
-        if (BigDecimal.class.equals(field.getType())) {
-            return true;
-        }
-        return false;
+        return BigDecimal.class.equals(field.getType());
     }
 
     public static Boolean isNum(Object cellValue) {
-        if (cellValue instanceof Integer
-            || cellValue instanceof Double
-            || cellValue instanceof Short
-            || cellValue instanceof Long
-            || cellValue instanceof Float
-            || cellValue instanceof BigDecimal) {
-            return true;
-        }
-        return false;
+        return cellValue instanceof Integer
+                || cellValue instanceof Double
+                || cellValue instanceof Short
+                || cellValue instanceof Long
+                || cellValue instanceof Float
+                || cellValue instanceof BigDecimal;
     }
 
     public static String getDefaultDateString(Date date) {
@@ -158,7 +149,6 @@ public class TypeUtil {
 
     }
 
-
     public static String formatFloat(String value) {
         if (null != value && value.contains(".")) {
             if (isNumeric(value)) {
@@ -187,21 +177,16 @@ public class TypeUtil {
         return value;
     }
 
-    public static final Pattern pattern = Pattern.compile("[\\+\\-]?[\\d]+([\\.][\\d]*)?([Ee][+-]?[\\d]+)?$");
-
     private static boolean isNumeric(String str) {
         Matcher isNum = pattern.matcher(str);
-        if (!isNum.matches()) {
-            return false;
-        }
-        return true;
+        return isNum.matches();
     }
 
     public static String formatDate(Date cellValue, String format) {
         SimpleDateFormat simpleDateFormat;
-        if(!StringUtils.isEmpty(format)) {
-             simpleDateFormat = new SimpleDateFormat(format);
-        }else {
+        if (!StringUtils.isEmpty(format)) {
+            simpleDateFormat = new SimpleDateFormat(format);
+        } else {
             simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         }
         return simpleDateFormat.format(cellValue);
@@ -212,7 +197,7 @@ public class TypeUtil {
         Object value = beanMap.get(fieldName);
         if (value != null) {
             if (value instanceof Date) {
-                cellValue = TypeUtil.formatDate((Date)value, format);
+                cellValue = TypeUtil.formatDate((Date) value, format);
             } else {
                 cellValue = value.toString();
             }
@@ -226,9 +211,9 @@ public class TypeUtil {
             ExcelColumnProperty columnProperty = excelHeadProperty.getExcelColumnProperty(i);
             if (columnProperty != null) {
                 Object value = TypeUtil.convert(stringList.get(i), columnProperty.getField(),
-                    columnProperty.getFormat(), use1904WindowDate);
+                        columnProperty.getFormat(), use1904WindowDate);
                 if (value != null) {
-                    map.put(columnProperty.getField().getName(),value);
+                    map.put(columnProperty.getField().getName(), value);
                 }
             }
         }

@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * @author jipengfei
  */
 public class XlsxSaxAnalyser extends BaseSaxAnalyser {
@@ -56,7 +55,7 @@ public class XlsxSaxAnalyser extends BaseSaxAnalyser {
 
         XSSFReader.SheetIterator ite;
         sheetSourceList = new ArrayList<SheetSource>();
-        ite = (XSSFReader.SheetIterator)xssfReader.getSheetsData();
+        ite = (XSSFReader.SheetIterator) xssfReader.getSheetsData();
         while (ite.hasNext()) {
             InputStream inputStream = ite.next();
             String sheetName = ite.getSheetName();

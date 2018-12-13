@@ -25,7 +25,7 @@ public class ReadModel2 extends BaseRowModel {
     @ExcelProperty(index = 5)
     private Double activityCode;
 
-    @ExcelProperty(index = 6,format = "yyyy-MM-dd")
+    @ExcelProperty(index = 6, format = "yyyy-MM-dd")
     private Date date;
 
     @ExcelProperty(index = 7)
@@ -121,16 +121,16 @@ public class ReadModel2 extends BaseRowModel {
     @Override
     public String toString() {
         return "JavaModel2{" +
-            "str='" + str + '\'' +
-            ", ff=" + ff +
-            ", mm=" + mm +
-            ", money=" + money +
-            ", times=" + times +
-            ", activityCode=" + activityCode +
-            ", date=" + date +
-            ", lx='" + lx + '\'' +
-            ", name='" + name + '\'' +
-            ", kk='" + kk + '\'' +
-            '}';
+                "str='" + str + '\'' +
+                ", ff=" + ff +
+                ", mm=" + mm +
+                ", money=" + money +
+                ", times=" + times +
+                ", activityCode=" + activityCode +
+                ", date=" + date +
+                ", lx='" + lx + '\'' +
+                ", name='" + name + '\'' +
+                ", kk='" + kk + '\'' +
+                '}';
     }
 }

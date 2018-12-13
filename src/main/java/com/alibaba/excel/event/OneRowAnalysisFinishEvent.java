@@ -8,6 +8,8 @@ import java.util.List;
  */
 public class OneRowAnalysisFinishEvent {
 
+    private Object data;
+
     public OneRowAnalysisFinishEvent(Object content) {
         this.data = content;
     }
@@ -21,8 +23,6 @@ public class OneRowAnalysisFinishEvent {
             data = ls;
         }
     }
-
-    private Object data;
 
     public Object getData() {
         return data;

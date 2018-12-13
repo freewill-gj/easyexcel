@@ -27,7 +27,7 @@ public class AfterWriteHandlerImpl implements WriteHandler {
     public void row(int rowNum, Row row) {
         Workbook workbook = row.getSheet().getWorkbook();
         //设置行高
-        row.setHeight((short)20);
+        row.setHeight((short) 20);
     }
 
     @Override
@@ -41,7 +41,6 @@ public class AfterWriteHandlerImpl implements WriteHandler {
             cell.setCellStyle(cellStyle);
 
 
-
             //设置备注
             Drawing draw = currentSheet.createDrawingPatriarch();
             Comment comment = draw.createCellComment(new XSSFClientAnchor(0, 0, 0, 0, 4, 25, 9, 30));
@@ -49,7 +48,7 @@ public class AfterWriteHandlerImpl implements WriteHandler {
             Font commentFormatter = workbook.createFont();
             commentFormatter.setFontName("宋体");
             //设置字体大小
-            commentFormatter.setFontHeightInPoints((short)9);
+            commentFormatter.setFontHeightInPoints((short) 9);
             rtf.applyFont(commentFormatter);
             comment.setString(rtf);
             comment.setAuthor("ceshi");

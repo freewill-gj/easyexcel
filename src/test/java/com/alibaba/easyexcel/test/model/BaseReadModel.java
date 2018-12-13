@@ -9,6 +9,7 @@ public class BaseReadModel extends BaseRowModel {
 
     @ExcelProperty(index = 1)
     protected Float ff;
+
     public String getStr() {
         return str;
     }
